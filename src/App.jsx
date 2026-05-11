@@ -237,7 +237,7 @@ function Payment({ plateau, qty, form, onBack }) {
 
   return (
     <div style={{ padding: "0 20px", maxWidth: 480, margin: "0 auto" }}>
-      <Back onClick={onBack} />
+      <BackBtn onClick={onBack} />
       <div className="f1" style={{ fontFamily: "Georgia,serif", fontSize: 22, fontWeight: 700, marginBottom: 20 }}>Paiement sécurisé</div>
       <div style={{ background: CARD, border: `1px solid ${BORD}`, borderRadius: 14, padding: 18, marginBottom: 16 }}>
         <div style={{ color: MUTED, fontSize: 10, textTransform: "uppercase", letterSpacing: 1, marginBottom: 12 }}>Récapitulatif</div>
