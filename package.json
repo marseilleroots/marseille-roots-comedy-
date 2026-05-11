@@ -14,7 +14,12 @@
     "stripe": "^14.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/parser": "^7.29.3",
     "@vitejs/plugin-react": "^4.2.1",
     "vite": "^5.2.0"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
