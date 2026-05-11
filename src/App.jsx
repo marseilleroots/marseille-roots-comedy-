@@ -209,7 +209,53 @@ function TicketForm({ plateau, qty, setQty, form, setForm, onSubmit, onBack }) {
   );
 }
 
-function Payment({ plateau, qty, form, onConfirm, onBack }) {
+function Payment({ plateau, qty, form, onBack }) {
+  const total = PL[plateau].price * qty;
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const goStripe = async () => {
+    setLoading(true); setError("");
+    try {
+      const res = await fetch("/api/create-checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plateau, qty, name: form.name, email: form.email }),
+      });
+      const data = await res.json();
+      if (data.url) { window.location.href = data.url; }
+      else { setError("Erreur : " + (data.error || "inconnue")); setLoading(false); }
+    } catch (e) {
+      setError("Erreur réseau. Réessayez."); setLoading(false);
+    }
+  };
+
+  return (
+    <div style={{ padding: "0 20px", maxWidth: 480, margin: "0 auto" }}>
+      <Back onClick={onBack} />
+      <div className="f1" style={{ fontFamily: "Georgia,serif", fontSize: 22, fontWeight: 700, marginBottom: 20 }}>Paiement sécurisé</div>
+      <div style={{ background: CARD, border: `1px solid ${BORD}`, borderRadius: 14, padding: 18, marginBottom: 16 }}>
+        <div style={{ color: MUTED, fontSize: 10, textTransform: "uppercase", letterSpacing: 1, marginBottom: 12 }}>Récapitulatif</div>
+        {[["Plateau", `${PL[plateau].label} · ${PL[plateau].time}`], ["Nom", form.name], ["Email", form.email], ["Quantité", `${qty} place${qty > 1 ? "s" : ""}`]].map(([k, v]) =>
+          <div key={k} style={{ display: "flex", justifyContent: "space-between", marginBottom: 7 }}>
+            <span style={{ color: MUTED, fontSize: 12 }}>{k}</span>
+            <span style={{ color: TEXT, fontSize: 12, fontWeight: 500, textAlign: "right", maxWidth: "60%" }}>{v}</span>
+          </div>
+        )}
+        <div style={{ borderTop: `1px solid ${BORD}`, marginTop: 10, paddingTop: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontWeight: 700, color: TEXT }}>Total</span>
+          <span style={{ fontWeight: 700, color: G, fontSize: 22 }}>{money(total)}</span>
+        </div>
+      </div>
+      <div style={{ background: "#E8F0EA", border: "1px solid #A8C9B0", borderRadius: 10, padding: "12px 14px", marginBottom: 16, display: "flex", gap: 9, fontSize: 12, color: "#2A6040" }}>
+        <span>🔒</span>
+        <div>Paiement sécurisé par <strong>Stripe</strong> — CB, Apple Pay, Google Pay</div>
+      </div>
+      {error && <div style={{ background: RED + "15", border: `1px solid ${RED}40`, borderRadius: 10, padding: "10px 14px", marginBottom: 14, color: RED, fontSize: 13 }}>{error}</div>}
+      <Btn onClick={goStripe} disabled={loading} full sz="15px 24px">{loading ? "⏳ Redirection Stripe..." : `Payer ${money(total)} →`}</Btn>
+    </div>
+  );
+}) {
   const total = PL[plateau].price * qty;
   const [loading, setLoading] = useState(false);
   const confirm = () => { setLoading(true); setTimeout(() => { setLoading(false); onConfirm(); }, 1800); };
@@ -733,7 +779,7 @@ export default function App() {
       {screen === "landing" && <Landing setScreen={setScreen} />}
       {screen === "select" && <SelectPlateau capacity={capacity} sold1={sold1} sold2={sold2} onSelect={p => { setPlateau(p); setScreen("form"); }} onBack={() => setScreen("landing")} />}
       {screen === "form" && plateau && <TicketForm plateau={plateau} qty={qty} setQty={setQty} form={form} setForm={setForm} onSubmit={() => setScreen("payment")} onBack={() => setScreen("select")} />}
-      {screen === "payment" && plateau && <Payment plateau={plateau} qty={qty} form={form} onConfirm={handleBuy} onBack={() => setScreen("form")} />}
+      {screen === "payment" && plateau && <Payment plateau={plateau} qty={qty} form={form} onBack={() => setScreen("form")} />}
       {screen === "ticket" && currentTicket && <TicketView ticket={currentTicket} onBack={() => { setScreen("landing"); setCurrentTicket(null); }} />}
       {screen === "admin-login" && <AdminLogin onAuth={() => { setAdminAuthed(true); setScreen("admin"); }} onBack={() => setScreen("landing")} />}
       {screen === "admin" && adminAuthed && <AdminDashboard tickets={tickets} capacity={capacity} saveCap={saveCap} saveTickets={saveTickets} onLogout={() => { setAdminAuthed(false); setScreen("landing"); }} />}
