@@ -255,19 +255,6 @@ function Payment({ plateau, qty, form, onBack }) {
       <Btn onClick={goStripe} disabled={loading} full sz="15px 24px">{loading ? "⏳ Redirection Stripe..." : `Payer ${money(total)} →`}</Btn>
     </div>
   );
-}) {
-  const total = PL[plateau].price * qty;
-  const [loading, setLoading] = useState(false);
-  const confirm = () => { setLoading(true); setTimeout(() => { setLoading(false); onConfirm(); }, 1800); };
-  return (
-    <div style={{ padding: 24, maxWidth: 500, margin: "0 auto" }}>
-      <BackBtn onClick={onBack} />
-      <div className="f1" style={{ fontFamily: "'Playfair Display', serif", fontSize: 26, fontWeight: 700, marginBottom: 28 }}>Paiement</div>
-      <Btn onClick={confirm} disabled={loading} full sx={{ fontSize: 17, padding: "16px" }}>
-        {loading ? "⏳ Traitement en cours..." : `Payer ${money(total)}`}
-      </Btn>
-    </div>
-  );
 }
 
 function TicketView({ ticket, onBack }) {
