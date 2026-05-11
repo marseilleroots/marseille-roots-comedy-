@@ -222,11 +222,16 @@ function Payment({ plateau, qty, form, onBack }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ plateau, qty, name: form.name, email: form.email }),
       });
+      if (!res.ok) {
+        const text = await res.text();
+        setError("Erreur serveur " + res.status + " : " + text.slice(0, 100));
+        setLoading(false); return;
+      }
       const data = await res.json();
       if (data.url) { window.location.href = data.url; }
-      else { setError("Erreur : " + (data.error || "inconnue")); setLoading(false); }
+      else { setError("Stripe error : " + (data.error || "pas d URL retournée")); setLoading(false); }
     } catch (e) {
-      setError("Erreur réseau. Réessayez."); setLoading(false);
+      setError("Erreur : " + e.message); setLoading(false);
     }
   };
 
