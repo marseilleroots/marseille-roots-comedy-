@@ -19,7 +19,7 @@ const PL = {
   1: { time: "19H30", label: "Premier Plateau", desc: "Ouverture de soirée", price: 20, color1: "#1B3A6B", color2: "#0D2444", accent: "#E8EEF7", badge: "BLEU", emoji: "🎤" },
   2: { time: "21H00", label: "Deuxième Plateau", desc: "Clôture de soirée",  price: 20, color1: "#7A0E25", color2: "#4A0815", accent: "#F5C0CE", badge: "ROUGE", emoji: "🎭" },
 };
-const PARTNERS = ["Maison 𝐧𝐩𝐥𝐭𝐧", "L'Angelis", "L'Arlequin"];
+const PARTNERS = ["Maison 𝐍𝐏𝐋𝐓𝐍", "L'Angelis", "L'Arlequin"];
 const ADMIN_PASS = "mkprod2026";
 const uid = () => "MRC-" + Math.random().toString(36).slice(2, 9).toUpperCase();
 const money = (n) => n.toLocaleString("fr-FR", { minimumFractionDigits: 2 }) + " €";
@@ -667,7 +667,7 @@ function AdminDashboard({ tickets, capacity, saveCap, saveTickets, onLogout }) {
 }
 
 export default function App() {
-  const [screen, setScreen] = useState("preview");
+  const [screen, setScreen] = useState("landing");
   const [previewPlateau, setPreviewPlateau] = useState(1);
   const [plateau, setPlateau] = useState(null);
   const [qty, setQty] = useState(1);
