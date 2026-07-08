@@ -214,8 +214,9 @@ function Payment({ plateau, qty, form, onBack }) {
         body: JSON.stringify({ plateau, qty, name: form.name, email: form.email }),
       });
       if (!res.ok) {
-        const text = await res.text();
-        setError("Erreur serveur " + res.status + " : " + text.slice(0, 100));
+        let msg = "Une erreur est survenue, réessayez.";
+        try { const j = JSON.parse(await res.text()); if (j.error) msg = j.error; } catch {}
+        setError(msg);
         setLoading(false); return;
       }
       const data = await res.json();
