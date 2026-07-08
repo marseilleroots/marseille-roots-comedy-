@@ -732,12 +732,22 @@ function SuccessScreen({ ticket, onBack }) {
               <div style={{ fontSize: 11, color: MUTED }}>{money(ticket.price)}</div>
             </div>
           </div>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, marginBottom: 14 }}>
-            <div style={{ background: "#EDD9A8", padding: 10, borderRadius: 10, border: `2px solid ${G}40` }}>
-              <img src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(qrData)}&bgcolor=EDD9A8&color=090806&margin=0`}
-                width={160} height={160} style={{ display: "block", borderRadius: 3 }} alt="QR" />
-            </div>
-            <div style={{ fontSize: 11, color: MUTED, letterSpacing: 2.5, fontFamily: "monospace", fontWeight: 600 }}>{ticket.id}</div>
+          {ticket.qty > 1 && <div style={{ textAlign: "center", fontSize: 12, color: G, fontWeight: 700, marginBottom: 10 }}>{ticket.qty} QR codes — un par personne</div>}
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16, marginBottom: 14 }}>
+            {Array.from({ length: ticket.qty }).map((_, i) => {
+              const seatId = `${ticket.id}-${i + 1}`;
+              const seatData = JSON.stringify({ id: seatId, p: ticket.plateau, ts: ticket.timestamp });
+              return (
+                <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                  {ticket.qty > 1 && <div style={{ fontSize: 10, color: G, fontWeight: 700, letterSpacing: 1 }}>PLACE {i + 1}/{ticket.qty}</div>}
+                  <div style={{ background: "#EDD9A8", padding: 10, borderRadius: 10, border: `2px solid ${G}40` }}>
+                    <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(seatData)}&bgcolor=EDD9A8&color=090806&margin=0`}
+                      width={140} height={140} style={{ display: "block", borderRadius: 3 }} alt={`QR place ${i + 1}`} />
+                  </div>
+                  <div style={{ fontSize: 10, color: MUTED, letterSpacing: 1.5, fontFamily: "monospace", fontWeight: 600 }}>{seatId}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
         <div style={{ background: CARD, borderTop: `1px solid ${BORD}`, padding: "10px 20px", textAlign: "center" }}>
