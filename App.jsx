@@ -163,7 +163,7 @@ function SelectPlateau({ capacity, sold1, sold2, onSelect, onBack }) {
               </div>
               <span style={{ background: badge.bg, color: badge.c, borderRadius: 20, padding: "4px 12px", fontSize: 12, fontWeight: 600 }}>{badge.label}</span>
             </div>
-            <div style={{ marginTop: 14, fontSize: 12, color: MUTED }}>Cliquez pour réserver cette séance</div>
+            <div style={{ marginTop: 14, fontSize: 12, color: full ? RED : MUTED }}>{full ? "Séance complète — plus de places disponibles" : "Cliquez pour réserver cette séance"}</div>
           </div>
         );
       })}
