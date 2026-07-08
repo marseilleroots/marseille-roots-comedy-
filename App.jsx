@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import jsQR from "jsqr";
 
 const G = "#FF2D8B";
 const GD = "#C4116A";
@@ -421,11 +422,9 @@ function AdminDashboard({ tickets, capacity, saveCap, saveTickets, onLogout }) {
           if (v.readyState === v.HAVE_ENOUGH_DATA) {
             c.width = v.videoWidth; c.height = v.videoHeight;
             const ctx = c.getContext("2d"); ctx.drawImage(v, 0, 0);
-            if (window.jsQR) {
-              const img = ctx.getImageData(0, 0, c.width, c.height);
-              const code = window.jsQR(img.data, img.width, img.height);
-              if (code) { stopScan(); processQR(code.data); return; }
-            }
+            const img = ctx.getImageData(0, 0, c.width, c.height);
+            const code = jsQR(img.data, img.width, img.height, { inversionAttempts: "attemptBoth" });
+            if (code) { stopScan(); processQR(code.data); return; }
           }
           rafRef.current = requestAnimationFrame(tick);
         };
@@ -807,9 +806,6 @@ export default function App() {
     lnk.rel = "stylesheet";
     lnk.href = "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap";
     document.head.appendChild(lnk);
-    const scr = document.createElement("script");
-    scr.src = "https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.js";
-    document.head.appendChild(scr);
     const st = document.createElement("style");
     st.textContent = STYLES;
     document.head.appendChild(st);
