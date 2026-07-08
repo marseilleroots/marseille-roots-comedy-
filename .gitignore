@@ -8,5 +8,10 @@ dist/
 # Données sensibles — ne jamais committer
 SAUVEGARDE-*.json
 
+# Fichiers livrables locaux (QR affiche, documents) — gardés hors de Git
+QR-arlequin-comedy.*
+billet_entree.html
+documents_production_mrcc.html
+
 .DS_Store
 npm-debug.log*
