@@ -70,7 +70,7 @@ module.exports = async function handler(req, res) {
             <div class="label">Lieu</div><div class="value">L'Arlequin · 1 rue Missiri · 13014 Marseille</div>
             <div class="label">Titulaire</div><div class="value">${name}</div>
             <div class="label">Places</div><div class="value" style="font-size:28px;color:#FF2D8B">${qty}</div>
-            <div class="label">Total</div><div class="value">${(price / 100).toFixed(2).replace('.', ',')} €</div>
+            <div class="label">Total</div><div class="value">${Number(price).toFixed(2).replace('.', ',')} €</div>
             <div class="qr-block">
               <img src="${qrUrl}" width="180" height="180" alt="QR Code" style="border-radius:8px;border:1px solid #ECECEC"/>
               <div class="ticket-id">${id}</div>
