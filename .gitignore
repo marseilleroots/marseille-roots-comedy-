@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.vercel/
+.env
+.env.*
+*.local
+
+# Données sensibles — ne jamais committer
+SAUVEGARDE-*.json
+
+.DS_Store
+npm-debug.log*

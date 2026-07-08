@@ -24,16 +24,16 @@ module.exports = async function handler(req, res) {
         price_data: {
           currency: 'eur',
           product_data: {
-            name: `Marseille Roots Comedy — ${labels[plateau]}`,
-            description: "4 Juillet 2026 · L'Arlequin · 1 rue Missiri · 13014 Marseille",
+            name: `L'Arlequin Comedy — ${labels[plateau]}`,
+            description: "Samedi 5 Septembre 2026 · L'Arlequin · 1 rue Missiri · 13014 Marseille",
           },
           unit_amount: prices[plateau],
         },
         quantity: parseInt(qty),
       }],
       mode: 'payment',
-      success_url: `${req.headers.origin || 'https://marseille-roots-comedy.vercel.app'}/?success=1&plateau=${plateau}&qty=${qty}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`,
-      cancel_url: `${req.headers.origin || 'https://marseille-roots-comedy.vercel.app'}/`,
+      success_url: `${req.headers.origin || 'https://arlequin-comedy.vercel.app'}/?success=1&plateau=${plateau}&qty=${qty}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`,
+      cancel_url: `${req.headers.origin || 'https://arlequin-comedy.vercel.app'}/`,
       metadata: { plateau: String(plateau), qty: String(qty), name, email },
     });
 
