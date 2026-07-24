@@ -22,6 +22,7 @@ const PL = {
 };
 const PARTNERS = ["Maison 𝐍𝐏𝐋𝐓𝐍", "L'Angelis", "L'Arlequin"];
 const ADMIN_PASS = "NPLTN$eptembre26";
+const BILLETTERIE_OUVERTE = false; // mettre à true pour rouvrir la billetterie au public
 const uid = () => "ARLQ-" + Math.random().toString(36).slice(2, 9).toUpperCase();
 const money = (n) => n.toLocaleString("fr-FR", { minimumFractionDigits: 2 }) + " €";
 
@@ -766,6 +767,21 @@ function SuccessScreen({ ticket, onBack }) {
   );
 }
 
+function BilletterieFermee() {
+  return (
+    <div style={{ minHeight: "100vh", background: "#FFFFFF", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 32, position: "relative" }}>
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 5, background: G }} />
+      <div style={{ fontSize: 12, letterSpacing: 4, color: BLUE, textTransform: "uppercase", fontWeight: 600, marginBottom: 18 }}>Maison NPLTN</div>
+      <div style={{ fontSize: "clamp(36px, 11vw, 64px)", fontWeight: 800, letterSpacing: -1.5, color: "#141414", lineHeight: 0.92, marginBottom: 26 }}>L'ARLEQUIN<br/>COMEDY</div>
+      <div style={{ display: "inline-block", background: "#FFE6F1", color: GD, fontSize: 14, fontWeight: 600, padding: "10px 22px", borderRadius: 24, marginBottom: 22 }}>Billetterie temporairement fermée</div>
+      <div style={{ color: MUTED, fontSize: 15, lineHeight: 1.65, maxWidth: 430 }}>
+        La billetterie est actuellement indisponible.<br/>Reviens bientôt pour la prochaine date — merci de ta patience !
+      </div>
+      <div style={{ marginTop: 34, color: MUTED, fontSize: 11, letterSpacing: 0.5 }}>© 2026 L'ARLEQUIN COMEDY</div>
+    </div>
+  );
+}
+
 export default function App() {
   const [screen, setScreen] = useState("landing");
   const [previewPlateau, setPreviewPlateau] = useState(1);
@@ -852,6 +868,10 @@ export default function App() {
     setForm({ name: "", email: "", phone: "" });
     setQty(1); setPlateau(null);
   };
+
+  if (!BILLETTERIE_OUVERTE && screen !== "admin" && screen !== "admin-login") {
+    return <BilletterieFermee />;
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: BG, color: TEXT }}>

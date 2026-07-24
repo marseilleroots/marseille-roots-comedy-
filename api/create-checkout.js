@@ -2,6 +2,7 @@ const Stripe = require('stripe');
 const { createClient } = require('@supabase/supabase-js');
 
 const CAPACITE_PLATEAU = 180; // places max par plateau
+const BILLETTERIE_OUVERTE = false; // mettre à true pour rouvrir les ventes
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -10,6 +11,8 @@ module.exports = async function handler(req, res) {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  if (!BILLETTERIE_OUVERTE) return res.status(403).json({ error: 'La billetterie est temporairement fermée.' });
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
